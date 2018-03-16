@@ -88,8 +88,8 @@ def train_rpn(cfg, dataset, image_set, root_path, dataset_path,
     else:
         fixed_param_prefix = cfg.network.FIXED_PARAMS
     mod = MutableModule(sym, data_names=data_names, label_names=label_names,
-                        logger=logger, context=ctx, max_data_shapes=[max_data_shape for _ in xrange(batch_size)],
-                        max_label_shapes=[max_label_shape for _ in xrange(batch_size)], fixed_param_prefix=fixed_param_prefix)
+                        logger=logger, context=ctx, max_data_shapes=[max_data_shape for _ in range(batch_size)],
+                        max_label_shapes=[max_label_shape for _ in range(batch_size)], fixed_param_prefix=fixed_param_prefix)
 
     # decide training params
     # metric

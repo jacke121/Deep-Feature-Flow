@@ -166,11 +166,11 @@ class AnchorLoader(mx.io.DataIter):
 
     @property
     def provide_data(self):
-        return [[(k, v.shape) for k, v in zip(self.data_name, self.data[i])] for i in xrange(len(self.data))]
+        return [[(k, v.shape) for k, v in zip(self.data_name, self.data[i])] for i in range(len(self.data))]
 
     @property
     def provide_label(self):
-        return [[(k, v.shape) for k, v in zip(self.label_name, self.label[i])] for i in xrange(len(self.data))]
+        return [[(k, v.shape) for k, v in zip(self.label_name, self.label[i])] for i in range(len(self.data))]
 
     @property
     def provide_data_single(self):

@@ -13,7 +13,7 @@ function. Results are written as the ImageNet VID format. Evaluation is based on
 criterion.
 """
 
-import cPickle
+import pickle
 import cv2
 import os
 import numpy as np
@@ -57,7 +57,7 @@ class ImageNetVID(IMDB):
         self.num_classes = len(self.classes)
         self.load_image_set_index()
         self.num_images = len(self.image_set_index)
-        print 'num_images', self.num_images
+        print('num_images', self.num_images)
 
     def load_image_set_index(self):
         """
@@ -101,14 +101,14 @@ class ImageNetVID(IMDB):
         cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
         if os.path.exists(cache_file):
             with open(cache_file, 'rb') as fid:
-                roidb = cPickle.load(fid)
-            print '{} gt roidb loaded from {}'.format(self.name, cache_file)
+                roidb = pickle.load(fid)
+            print('{} gt roidb loaded from {}'.format(self.name, cache_file))
             return roidb
 
         gt_roidb = [self.load_vid_annotation(index) for index in range(0, len(self.image_set_index))]
         with open(cache_file, 'wb') as fid:
-            cPickle.dump(gt_roidb, fid, cPickle.HIGHEST_PROTOCOL)
-        print 'wrote gt roidb to {}'.format(cache_file)
+            pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
+        print('wrote gt roidb to {}'.format(cache_file))
 
         return gt_roidb
 
@@ -226,7 +226,7 @@ class ImageNetVID(IMDB):
         :param all_boxes: boxes to be processed [bbox, confidence]
         :return: None
         """
-        print 'Writing {} ImageNetVID results file'.format('all')
+        print('Writing {} ImageNetVID results file'.format('all'))
         filename = self.get_result_file_template().format('all')
         with open(filename, 'wt') as f:
             for im_ind, index in enumerate(self.image_set_index):
@@ -248,7 +248,7 @@ class ImageNetVID(IMDB):
         :param all_boxes: boxes to be processed [bbox, confidence]
         :return: None
         """
-        print 'Writing {} ImageNetVID results file'.format('all')
+        print('Writing {} ImageNetVID results file'.format('all'))
         filename = self.get_result_file_template().format('all')
         with open(filename, 'wt') as f:
             for detection in detections:

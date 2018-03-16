@@ -9,3 +9,6 @@ this_dir = osp.dirname(__file__)
 
 lib_path = osp.join(this_dir, '..', 'lib')
 add_path(lib_path)
+
+lib_path = osp.join(this_dir, '..', 'lib/bbox')
+add_path(lib_path)

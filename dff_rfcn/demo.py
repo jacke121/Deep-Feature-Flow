@@ -73,7 +73,7 @@ def main():
     key_im_tensor = None
     for idx, im_name in enumerate(image_names):
         assert os.path.exists(im_name), ('%s does not exist'.format(im_name))
-        im = cv2.imread(im_name, cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION)
+        im = cv2.imread(im_name)
         target_size = config.SCALES[0][0]
         max_size = config.SCALES[0][1]
         im, im_scale = resize(im, target_size, max_size, stride=config.network.IMAGE_STRIDE)
@@ -87,11 +87,11 @@ def main():
     # get predictor
     data_names = ['data', 'im_info', 'data_key', 'feat_key']
     label_names = []
-    data = [[mx.nd.array(data[i][name]) for name in data_names] for i in xrange(len(data))]
+    data = [[mx.nd.array(data[i][name]) for name in data_names] for i in range(len(data))]
     max_data_shape = [[('data', (1, 3, max([v[0] for v in config.SCALES]), max([v[1] for v in config.SCALES]))),
                        ('data_key', (1, 3, max([v[0] for v in config.SCALES]), max([v[1] for v in config.SCALES]))),]]
-    provide_data = [[(k, v.shape) for k, v in zip(data_names, data[i])] for i in xrange(len(data))]
-    provide_label = [None for i in xrange(len(data))]
+    provide_data = [[(k, v.shape) for k, v in zip(data_names, data[i])] for i in range(len(data))]
+    provide_label = [None for i in range(len(data))]
     arg_params, aux_params = load_param(cur_path + model, 0, process=True)
     key_predictor = Predictor(key_sym, data_names, label_names,
                           context=[mx.gpu(0)], max_data_shapes=max_data_shape,
@@ -104,11 +104,11 @@ def main():
     nms = gpu_nms_wrapper(config.TEST.NMS, 0)
 
     # warm up
-    for j in xrange(2):
+    for j in range(2):
         data_batch = mx.io.DataBatch(data=[data[j]], label=[], pad=0, index=0,
                                      provide_data=[[(k, v.shape) for k, v in zip(data_names, data[j])]],
                                      provide_label=[None])
-        scales = [data_batch.data[i][1].asnumpy()[0, 2] for i in xrange(len(data_batch.data))]
+        scales = [data_batch.data[i][1].asnumpy()[0, 2] for i in range(len(data_batch.data))]
         if j % key_frame_interval == 0:
             scores, boxes, data_dict, feat = im_detect(key_predictor, data_batch, data_names, scales, config)
         else:
@@ -116,7 +116,7 @@ def main():
             data_batch.provide_data[0][-1] = ('feat_key', feat.shape)
             scores, boxes, data_dict, _ = im_detect(cur_predictor, data_batch, data_names, scales, config)
 
-    print "warmup done"
+    print("warmup done")
     # test
     time = 0
     count = 0
@@ -124,9 +124,11 @@ def main():
         data_batch = mx.io.DataBatch(data=[data[idx]], label=[], pad=0, index=idx,
                                      provide_data=[[(k, v.shape) for k, v in zip(data_names, data[idx])]],
                                      provide_label=[None])
-        scales = [data_batch.data[i][1].asnumpy()[0, 2] for i in xrange(len(data_batch.data))]
+        scales = [data_batch.data[i][1].asnumpy()[0, 2] for i in range(len(data_batch.data))]
 
         tic()
+        import datetime
+        time_old=datetime.datetime.now()
         if idx % key_frame_interval == 0:
             scores, boxes, data_dict, feat = im_detect(key_predictor, data_batch, data_names, scales, config)
         else:
@@ -135,8 +137,9 @@ def main():
             scores, boxes, data_dict, _ = im_detect(cur_predictor, data_batch, data_names, scales, config)
         time += toc()
         count += 1
-        print 'testing {} {:.4f}s'.format(im_name, time/count)
+        print('testing {} {:.4f}s'.format(im_name, time / count))
 
+        print('requests2', (datetime.datetime.now() - time_old).microseconds)
         boxes = boxes[0].astype('f')
         scores = scores[0].astype('f')
         dets_nms = []
@@ -153,10 +156,13 @@ def main():
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         # show_boxes(im, dets_nms, classes, 1)
         out_im = draw_boxes(im, dets_nms, classes, 1)
+        cv2.imshow("asdf", out_im)
+        cv2.waitKey(0)
         _, filename = os.path.split(im_name)
         cv2.imwrite(output_dir + filename,out_im)
 
-    print 'done'
+    print('done')
+
 
 if __name__ == '__main__':
     main()
