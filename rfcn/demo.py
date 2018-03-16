@@ -135,6 +135,8 @@ def main():
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         # show_boxes(im, dets_nms, classes, 1)
         out_im = draw_boxes(im, dets_nms, classes, 1)
+        cv2.imshow("asdf", out_im)
+        cv2.waitKey(0)
         _, filename = os.path.split(im_name)
         cv2.imwrite(output_dir + filename,out_im)
 

@@ -46,7 +46,7 @@ config.dataset.dataset = 'ImageNetVID'
 config.dataset.image_set = 'DET_train_30classes+VID_train_15frames'
 config.dataset.test_image_set = 'VID_val_frames'
 config.dataset.root_path = './data'
-config.dataset.dataset_path = './data/ILSVRC2015'
+config.dataset.dataset_path = '../data/ILSVRC2015'
 config.dataset.NUM_CLASSES = 31
 
 
