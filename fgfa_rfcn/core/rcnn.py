@@ -23,8 +23,8 @@ import numpy as np
 import numpy.random as npr
 
 from utils.image import get_image, tensor_vstack
-from bbox.bbox_transform import bbox_overlaps, bbox_transform
-from bbox.bbox_regression import expand_bbox_regression_targets
+from b_box.bbox_transform import bbox_overlaps, bbox_transform
+from b_box.bbox_regression import expand_bbox_regression_targets
 
 
 def get_rcnn_testbatch(roidb, cfg):
