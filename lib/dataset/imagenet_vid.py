@@ -45,7 +45,7 @@ class ImageNetVID(IMDB):
                         'tiger', 'train', 'turtle', 'watercraft',
                         'whale', 'zebra']
         self.classes_map = ['__background__',  # always index 0
-                        'n02691156', 'n02419796', 'n02131653', 'n02834778',
+                        'mouse', 'n02419796', 'n02131653', 'n02834778',
                         'n01503061', 'n02924116', 'n02958343', 'n02402425',
                         'n02084071', 'n02121808', 'n02503517', 'n02118333',
                         'n02510455', 'n02342885', 'n02374451', 'n02129165',
@@ -86,9 +86,9 @@ class ImageNetVID(IMDB):
         :return: full path of this image
         """
         if self.det_vid == 'DET':
-            image_file = os.path.join(self.data_path, 'Data', 'DET', index + '.JPEG')
+            image_file = os.path.join(self.data_path,  'DET', index + '.jpg')
         else:
-            image_file = os.path.join(self.data_path, 'Data', 'VID', index + '.JPEG')
+            image_file = os.path.join(self.data_path,  'VID', index + '.JPEG')
 
         # assert os.path.exists(image_file), 'Path does not exist: {}'.format(image_file)
         return image_file
@@ -158,7 +158,7 @@ class ImageNetVID(IMDB):
             y1 = np.maximum(float(bbox.find('ymin').text), 0)
             x2 = np.minimum(float(bbox.find('xmax').text), roi_rec['width']-1)
             y2 = np.minimum(float(bbox.find('ymax').text), roi_rec['height']-1)
-            if not class_to_index.has_key(obj.find('name').text):
+            if not obj.find('name').text in class_to_index:
                 continue
             valid_objs[ix] = True
             cls = class_to_index[obj.find('name').text.lower().strip()]

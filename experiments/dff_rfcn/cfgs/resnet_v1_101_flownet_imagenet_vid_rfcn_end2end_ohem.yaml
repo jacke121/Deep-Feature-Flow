@@ -11,8 +11,11 @@ default:
   frequent: 100
   kvstore: device
 network:
-  pretrained: "./model/pretrained_model/resnet_v1_101"
-  pretrained_flow: "./model/pretrained_model/flownet"
+#  pretrained: "./model/pretrained_model/resnet_v1_101"
+#  pretrained_flow: "./model/pretrained_model/flownet"
+
+  pretrained: ''
+  pretrained_flow: ''
   pretrained_epoch: 0
   PIXEL_MEANS:
   - 103.06
@@ -51,8 +54,8 @@ network:
 dataset:
   NUM_CLASSES: 31
   dataset: ImageNetVID
-  dataset_path: "./data/ILSVRC2015"
-  image_set: DET_train_30classes+VID_train_15frames
+  dataset_path: "/home/sbd/data/train/ILSVRC2015"
+  image_set: DET_train_30classes
   root_path: "./data"
   test_image_set: VID_val_videos
   proposal: rpn

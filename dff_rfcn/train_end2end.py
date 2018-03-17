@@ -20,7 +20,7 @@ from config.config import config, update_config
 def parse_args():
     parser = argparse.ArgumentParser(description='Train R-FCN network')
     # general
-    parser.add_argument('--cfg', help='experiment configure file name', required=True, type=str)
+    parser.add_argument('--cfg', help='experiment configure file name', default="../experiments/dff_rfcn/cfgs/resnet_v1_101_flownet_imagenet_vid_rfcn_end2end_ohem.yaml", type=str)
 
     args, rest = parser.parse_known_args()
     # update config

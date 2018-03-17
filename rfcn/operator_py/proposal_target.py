@@ -99,7 +99,10 @@ class ProposalTargetProp(mx.operator.CustomOpProp):
         rpn_rois_shape = in_shape[0]
         gt_boxes_shape = in_shape[1]
 
-        rois = rpn_rois_shape[0] + gt_boxes_shape[0] if self._batch_rois == -1 else self._batch_rois
+        rmp_rois=rpn_rois_shape[0]
+        if len(gt_boxes_shape)>0:
+            rmp_rois = rpn_rois_shape[0] + gt_boxes_shape[0]
+        rois = rmp_rois if self._batch_rois == -1 else self._batch_rois
 
         output_rois_shape = (rois, 5)
         label_shape = (rois, )

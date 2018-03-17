@@ -23,7 +23,7 @@ def get_image(roidb, config):
     for i in range(num_images):
         roi_rec = roidb[i]
         assert os.path.exists(roi_rec['image']), '%s does not exist'.format(roi_rec['image'])
-        im = cv2.imread(roi_rec['image'], cv2.IMREAD_COLOR|cv2.IMREAD_IGNORE_ORIENTATION)
+        im = cv2.imread(roi_rec['image'])
         if roidb[i]['flipped']:
             im = im[:, ::-1, :]
         new_rec = roi_rec.copy()
@@ -59,9 +59,9 @@ def get_pair_image(roidb, config):
 
         eq_flag = 0 # 0 for unequal, 1 for equal
         assert os.path.exists(roi_rec['image']), '%s does not exist'.format(roi_rec['image'])
-        im = cv2.imread(roi_rec['image'], cv2.IMREAD_COLOR|cv2.IMREAD_IGNORE_ORIENTATION)
+        im = cv2.imread(roi_rec['image'])
 
-        if roi_rec.has_key('pattern'):
+        if 'pattern' in roi_rec:
             ref_id = min(max(roi_rec['frame_seg_id'] + np.random.randint(config.TRAIN.MIN_OFFSET, config.TRAIN.MAX_OFFSET+1), 0),roi_rec['frame_seg_len']-1)
             ref_image = roi_rec['pattern'] % ref_id
             assert os.path.exists(ref_image), '%s does not exist'.format(ref_image)
